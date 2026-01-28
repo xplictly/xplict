@@ -267,13 +267,13 @@ const Index = () => {
                   transition={{ duration: 0.8, delay: 0.2 }}
                   className="mb-8"
                 >
-                  <h1 className="font-serif-display text-7xl md:text-8xl lg:text-9xl font-bold leading-none mb-6">
+                  <h1 className="font-serif-display text-5xl md:text-6xl lg:text-7xl font-bold leading-none mb-6">
                     <motion.span
                       initial={{ opacity: 0 }}
                       animate={{ opacity: contentVisible ? 1 : 0 }}
                       transition={{ duration: 1.5, delay: 0.3 }}
                     >
-                      i'm just having fun!!!!!
+                      Hello, I'm Maanas
                     </motion.span>
                   </h1>
                 </motion.div>
