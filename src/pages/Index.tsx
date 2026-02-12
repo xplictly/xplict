@@ -8,6 +8,14 @@ import { ContactForm } from '@/components/ContactForm';
 import { EasterEggOverlay } from '@/components/EasterEggOverlay';
 import { useKonamiCode } from '@/hooks/useKonamiCode';
 
+// Small badge assets
+import badgeTypescript from '@/assets/badges/typescript.svg';
+import badgeReact from '@/assets/badges/react.svg';
+import badgeSwift from '@/assets/badges/swift.svg';
+import badgePython from '@/assets/badges/python.svg';
+import badgeNode from '@/assets/badges/node.svg';
+import badgeKotlin from '@/assets/badges/kotlin.svg';
+
 // Animated counter component
 const AnimatedCounter = ({ value, delay }: { value: number; delay: number }) => {
   const [displayValue, setDisplayValue] = useState(0);
@@ -64,57 +72,72 @@ const BackToTopButton = ({ show }: { show: boolean }) => {
   );
 };
 
+const BADGES: Record<string, string> = {
+  typescript: badgeTypescript,
+  react: badgeReact,
+  swift: badgeSwift,
+  python: badgePython,
+  node: badgeNode,
+  kotlin: badgeKotlin,
+};
+
 const projects = [
   {
     name: 'Path Visualizer',
-    description: 'Interactive pathfinding algorithm visualizer. Visualizes A*, Dijkstra and BFS for learning and debugging.',
+    description: 'Interactive visualizer for pathfinding algorithms (A*, Dijkstra, BFS). Great for teaching and debugging algorithmic ideas.',
     url: 'https://github.com/xplictly/path-visualizer',
-    tech: 'JavaScript · React',
+    tech: 'TypeScript · React',
+    badges: ['typescript', 'react'],
     category: 'Web',
     featured: true,
-    contribution: 'Helps students and developers understand pathfinding algorithms through interactive visualization, making algorithmic thinking accessible.'
+    contribution: 'Educational tool that helps learners and engineers prototype and reason about graph search algorithms quickly.'
   },
   {
     name: 'Image Reko (iOS/macOS)',
-    description: 'On-device image recognition for iOS and macOS — CoreML/vision experiments and demos.',
+    description: 'On-device image recognition demos using CoreML & Vision for privacy-friendly inference on Apple platforms.',
     url: 'https://github.com/xplictly/image-reko-ios-macos',
     tech: 'Swift · CoreML',
+    badges: ['swift'],
     category: 'Mobile',
     featured: true,
-    contribution: 'Demonstrates privacy-first, on-device ML for image understanding — useful for apps that need fast, private inference without server costs.'
+    contribution: 'Prototype showcasing fast, private ML inference — useful for apps needing local image understanding without server costs.'
   },
   {
     name: 'Widget Wall',
-    description: 'Widget Wall — macOS home-screen widgets built with WidgetKit and Swift. Tiny, focused widgets for glanceable info.',
+    description: 'A collection of tiny macOS widgets built with WidgetKit—focused, glanceable information for the desktop.',
     url: 'https://github.com/xplictly/widget-wall',
     tech: 'Swift · WidgetKit',
+    badges: ['swift'],
     category: 'Mobile',
     featured: true,
-    contribution: 'Provides modular widgets that surface timely, glanceable data — improves productivity by reducing app context switches.'
+    contribution: 'Modular widgets that surface quick, at-a-glance information to reduce context switching.'
   },
   {
     name: 'F1 Companion',
-    description: 'Companion app for F1 enthusiasts (mobile) with session info and simple tracking features.',
+    description: 'Mobile companion app for F1 fans providing session summaries and lightweight tracking features.',
     url: 'https://github.com/xplictly/f1companion',
-    tech: 'Kotlin · Mobile',
+    tech: 'Kotlin · Android',
+    badges: ['kotlin'],
     category: 'Mobile',
-    contribution: 'Makes racing data approachable for fans by aggregating session information and providing quick insights.'
+    contribution: 'Aggregates and presents racing data to make session info more accessible for fans.'
   },
   {
     name: 'Cursed Snake',
-    description: 'A playful, terminal-based snake variant built for learning game mechanics and Python scripting.',
+    description: 'Terminal-based snake variant implemented for learning game loops, input handling, and procedural content.',
     url: 'https://github.com/xplictly/cursed-snake',
     tech: 'Python',
+    badges: ['python'],
     category: 'Games',
-    contribution: 'Serves as a lightweight sandbox for learning game loops and procedural generation—great for teaching basics of game dev.'
+    contribution: 'A compact sandbox for learning game development fundamentals and quick prototyping.'
   },
   {
     name: 'Discord-UwU',
-    description: 'A small Discord bot with moderation and fun commands; republished from earlier work.',
+    description: 'A small Discord bot featuring moderation helpers and playful commands for community servers.',
     url: 'https://github.com/xplictly/Discord-UwU',
     tech: 'Node.js · Discord.js',
+    badges: ['node'],
     category: 'Tools',
-    contribution: 'Provides community moderation utilities and entertainment features to streamline small server management.'
+    contribution: 'Streamlines moderation and adds light-hearted features to keep communities engaged.'
   },
 ];
 
@@ -407,6 +430,11 @@ const Index = () => {
                             <div className="bg-background/50 p-4 rounded-lg border border-border/20">
                               <div className="text-sm text-foreground/60 mb-3">Tech</div>
                               <div className="text-sm font-medium">{filteredProjects[0].tech}</div>
+                              <div className="flex flex-wrap gap-2 mt-3">
+                                {filteredProjects[0].badges?.map((b: string) => (
+                                  <img key={b} src={BADGES[b]} alt={b} className="w-6 h-6" />
+                                ))}
+                              </div>
                               <div className="mt-4 text-xs text-muted-foreground px-2 py-1 bg-secondary inline-block rounded-full">{filteredProjects[0].category}</div>
                             </div>
                           </div>
@@ -450,6 +478,11 @@ const Index = () => {
                               <h4 className="text-2xl font-bold mb-3">{project.name}</h4>
                               <p className="text-sm text-muted-foreground mb-4">{project.description}</p>
                               <p className="text-sm text-foreground/70 mb-2"><strong>Tech:</strong> {project.tech}</p>
+                              <div className="flex items-center gap-2 mb-3">
+                                {project.badges?.map((b: string) => (
+                                  <img key={b} src={BADGES[b]} alt={b} className="w-5 h-5" />
+                                ))}
+                              </div>
                               <p className="text-sm text-muted-foreground">{project.contribution}</p>
                             </div>
 
@@ -470,6 +503,11 @@ const Index = () => {
                               </p>
                               <div className="flex items-center gap-3 text-sm text-foreground/60">
                                 <span>{project.tech}</span>
+                                <div className="flex items-center gap-2">
+                                  {project.badges?.map((b: string) => (
+                                    <img key={b} src={BADGES[b]} alt={b} className="w-4 h-4" />
+                                  ))}
+                                </div>
                                 <span className="px-3 py-1 bg-secondary rounded-full text-xs">
                                   {project.category}
                                 </span>
