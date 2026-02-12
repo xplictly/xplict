@@ -4,6 +4,8 @@ import { ArrowUpRight, ArrowRight, Github, Instagram, Mail, ExternalLink, Chevro
 import maanasAvatar from '@/assets/maanas-avatar.jpg';
 import projectPathVisualizer from '@/assets/project-path-visualizer.jpg';
 import projectF1Dashboard from '@/assets/project-f1-dashboard.jpg';
+import projectWidgetWall from '@/assets/project-widget-wall.svg';
+import projectImageReko from '@/assets/project-image-reko.svg';
 import projectCursedSnake from '@/assets/project-cursed-snake.jpg';
 import projectDiscordUwu from '@/assets/project-discord-uwu.jpg';
 import projectOsiris from '@/assets/project-osiris.jpg';
@@ -82,8 +84,8 @@ const projects = [
   },
   {
     name: 'Image Reko (iOS/macOS)',
-    description: 'On-device image recognition for iOS and macOS—Swift app that demos CoreML workflows.',
-    image: projectPathVisualizer, // placeholder until a dedicated asset is added
+    description: 'On-device image recognition for iOS and macOS — CoreML/vision experiments and demos.',
+    image: projectImageReko,
     url: 'https://github.com/xplictly/image-reko-ios-macos',
     tech: 'Swift · CoreML',
     category: 'Mobile',
@@ -91,11 +93,11 @@ const projects = [
   },
   {
     name: 'Widget Wall',
-    description: 'Modular widget wall — a set of small embeddable widgets and dashboard components (replaces F1 Dashboard).',
-    image: projectF1Dashboard,
+    description: 'Widget Wall — macOS home-screen widgets built with WidgetKit and Swift. Tiny, focused widgets for glanceable info.',
+    image: projectWidgetWall,
     url: 'https://github.com/xplictly/widget-wall',
-    tech: 'TypeScript · React',
-    category: 'Web',
+    tech: 'Swift · WidgetKit',
+    category: 'Mobile',
     featured: true,
   },
   {
