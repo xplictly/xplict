@@ -473,7 +473,7 @@ const Index = () => {
                               <span className="text-xs font-mono text-foreground/50 mb-2">
                                 0{filteredProjects.indexOf(project) + 1}
                               </span>
-                              <h4 className="text-xl font-bold mb-3 group-hover:text-foreground/80 transition-colors">
+                              <h4 className="font-serif-display text-2xl font-bold mb-3 group-hover:text-foreground/80 transition-colors">
                                 {project.name}
                               </h4>
                               <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
