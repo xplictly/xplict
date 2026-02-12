@@ -2,14 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
 import { ArrowUpRight, ArrowRight, Github, Instagram, Mail, ExternalLink, ChevronUp, Copy, Check } from 'lucide-react';
 import maanasAvatar from '@/assets/maanas-avatar.jpg';
-import projectPathVisualizer from '@/assets/project-path-visualizer.jpg';
-import projectF1Dashboard from '@/assets/project-f1-dashboard.jpg';
-import projectWidgetWall from '@/assets/project-widget-wall.svg';
-import projectImageReko from '@/assets/project-image-reko.svg';
-import projectCursedSnake from '@/assets/project-cursed-snake.jpg';
-import projectDiscordUwu from '@/assets/project-discord-uwu.jpg';
-import projectOsiris from '@/assets/project-osiris.jpg';
-import projectF1Companion from '@/assets/project-f1-companion.jpg';
 import { SpotlightCursor } from '@/components/SpotlightCursor';
 import { CustomCursor } from '@/components/CustomCursor';
 import { ContactForm } from '@/components/ContactForm';
@@ -76,53 +68,53 @@ const projects = [
   {
     name: 'Path Visualizer',
     description: 'Interactive pathfinding algorithm visualizer. Visualizes A*, Dijkstra and BFS for learning and debugging.',
-    image: projectPathVisualizer,
     url: 'https://github.com/xplictly/path-visualizer',
     tech: 'JavaScript · React',
     category: 'Web',
     featured: true,
+    contribution: 'Helps students and developers understand pathfinding algorithms through interactive visualization, making algorithmic thinking accessible.'
   },
   {
     name: 'Image Reko (iOS/macOS)',
     description: 'On-device image recognition for iOS and macOS — CoreML/vision experiments and demos.',
-    image: projectImageReko,
     url: 'https://github.com/xplictly/image-reko-ios-macos',
     tech: 'Swift · CoreML',
     category: 'Mobile',
     featured: true,
+    contribution: 'Demonstrates privacy-first, on-device ML for image understanding — useful for apps that need fast, private inference without server costs.'
   },
   {
     name: 'Widget Wall',
     description: 'Widget Wall — macOS home-screen widgets built with WidgetKit and Swift. Tiny, focused widgets for glanceable info.',
-    image: projectWidgetWall,
     url: 'https://github.com/xplictly/widget-wall',
     tech: 'Swift · WidgetKit',
     category: 'Mobile',
     featured: true,
+    contribution: 'Provides modular widgets that surface timely, glanceable data — improves productivity by reducing app context switches.'
   },
   {
     name: 'F1 Companion',
     description: 'Companion app for F1 enthusiasts (mobile) with session info and simple tracking features.',
-    image: projectF1Companion,
     url: 'https://github.com/xplictly/f1companion',
     tech: 'Kotlin · Mobile',
     category: 'Mobile',
+    contribution: 'Makes racing data approachable for fans by aggregating session information and providing quick insights.'
   },
   {
     name: 'Cursed Snake',
     description: 'A playful, terminal-based snake variant built for learning game mechanics and Python scripting.',
-    image: projectCursedSnake,
     url: 'https://github.com/xplictly/cursed-snake',
     tech: 'Python',
     category: 'Games',
+    contribution: 'Serves as a lightweight sandbox for learning game loops and procedural generation—great for teaching basics of game dev.'
   },
   {
     name: 'Discord-UwU',
     description: 'A small Discord bot with moderation and fun commands; republished from earlier work.',
-    image: projectDiscordUwu,
     url: 'https://github.com/xplictly/Discord-UwU',
     tech: 'Node.js · Discord.js',
     category: 'Tools',
+    contribution: 'Provides community moderation utilities and entertainment features to streamline small server management.'
   },
 ];
 
@@ -398,27 +390,13 @@ const Index = () => {
                       className="block"
                     >
                       <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
-                        {/* Image */}
-                        <div className="relative h-96 md:h-full rounded-2xl overflow-hidden">
-                          <motion.img
-                            src={filteredProjects[0].image}
-                            alt={filteredProjects[0].name}
-                            className="w-full h-full object-cover"
-                            initial={{ filter: 'blur(20px)', opacity: 0 }}
-                            whileInView={{ filter: 'blur(0px)', opacity: 1 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 1, delay: 0.2 }}
-                            whileHover={{ scale: 1.08 }}
-                          />
-                          <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300" />
-                          <motion.div
-                            className="absolute top-4 right-4 px-4 py-2 bg-background/80 backdrop-blur rounded-full text-sm font-medium"
-                            initial={{ opacity: 0 }}
-                            whileInView={{ opacity: 1 }}
-                            transition={{ delay: 0.2 }}
-                          >
-                            ⭐ Latest
-                          </motion.div>
+                        {/* Content card (no image) */}
+                        <div className="relative h-96 md:h-full rounded-2xl overflow-hidden bg-background/60 border border-border/30 p-8 flex flex-col justify-center">
+                          <div className="text-sm font-mono text-foreground/60 mb-2">Featured Project</div>
+                          <h3 className="font-serif-display text-4xl md:text-5xl font-bold mb-4">{filteredProjects[0].name}</h3>
+                          <p className="text-lg text-muted-foreground mb-6">{filteredProjects[0].description}</p>
+                          <p className="text-sm text-foreground/70 mb-4"><strong>Tech:</strong> {filteredProjects[0].tech}</p>
+                          <p className="text-sm text-muted-foreground">{filteredProjects[0].contribution}</p>
                         </div>
 
                         {/* Content */}
@@ -477,21 +455,15 @@ const Index = () => {
                           <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
                             {/* Image - alternates position */}
                             <div
-                              className={`relative h-96 md:h-full rounded-2xl overflow-hidden ${
+                              className={`relative h-96 md:h-full rounded-2xl overflow-hidden bg-background/60 border border-border/30 p-8 ${
                                 index % 2 === 1 ? 'md:order-2' : ''
                               }`}
                             >
-                              <motion.img
-                                src={project.image}
-                                alt={project.name}
-                                className="w-full h-full object-cover"
-                                initial={{ filter: 'blur(20px)', opacity: 0 }}
-                                whileInView={{ filter: 'blur(0px)', opacity: 1 }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 1, delay: 0.1 }}
-                                whileHover={{ scale: 1.05 }}
-                              />
-                              <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300" />
+                              <div className="text-sm font-mono text-foreground/60 mb-3">0{filteredProjects.indexOf(project) + 1}</div>
+                              <h4 className="text-2xl font-bold mb-3">{project.name}</h4>
+                              <p className="text-sm text-muted-foreground mb-4">{project.description}</p>
+                              <p className="text-sm text-foreground/70 mb-2"><strong>Tech:</strong> {project.tech}</p>
+                              <p className="text-sm text-muted-foreground">{project.contribution}</p>
                             </div>
 
                             {/* Content */}
