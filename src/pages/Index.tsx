@@ -374,14 +374,14 @@ const Index = () => {
                   </motion.div>
                 </motion.div>
 
-                {/* Featured Project Highlight (First of filtered) */}
+                {/* Featured Project — promoted as the main content (no image) */}
                 {filteredProjects.length > 0 && (
                   <motion.div
                     initial={{ opacity: 0, y: 40 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: '-100px' }}
                     transition={{ duration: 0.8 }}
-                    className="mb-24 group"
+                    className="mb-24"
                   >
                     <a
                       href={filteredProjects[0].url}
@@ -389,40 +389,27 @@ const Index = () => {
                       rel="noopener noreferrer"
                       className="block"
                     >
-                      <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
-                        {/* Content card (no image) */}
-                        <div className="relative h-96 md:h-full rounded-2xl overflow-hidden bg-background/60 border border-border/30 p-8 flex flex-col justify-center">
-                          <div className="text-sm font-mono text-foreground/60 mb-2">Featured Project</div>
-                          <h3 className="font-serif-display text-4xl md:text-5xl font-bold mb-4">{filteredProjects[0].name}</h3>
-                          <p className="text-lg text-muted-foreground mb-6">{filteredProjects[0].description}</p>
-                          <p className="text-sm text-foreground/70 mb-4"><strong>Tech:</strong> {filteredProjects[0].tech}</p>
-                          <p className="text-sm text-muted-foreground">{filteredProjects[0].contribution}</p>
+                      <div className="relative w-full rounded-2xl overflow-hidden bg-background/60 border border-border/30 p-12">
+                        {/* Title (use the same serif display font as the left-side style) */}
+                        <div className="mb-6">
+                          <span className="text-sm font-mono text-foreground/60">Featured</span>
+                          <h2 className="font-serif-display text-6xl md:text-7xl font-bold leading-tight mt-4">{filteredProjects[0].name}</h2>
                         </div>
 
-                        {/* Content */}
-                        <div className="flex flex-col justify-center">
-                          <span className="text-sm font-mono text-foreground/60 mb-3">
-                            Featured Project
-                          </span>
-                          <h3 className="font-serif-display text-5xl md:text-6xl font-bold mb-4 group-hover:text-foreground/80 transition-colors">
-                            {filteredProjects[0].name}
-                          </h3>
-                          <p className="text-xl text-muted-foreground mb-8">
-                            {filteredProjects[0].description}
-                          </p>
-                          <div className="flex items-center gap-3 text-sm text-foreground/60 mb-8">
-                            <span>{filteredProjects[0].tech}</span>
-                            <span className="px-3 py-1 bg-secondary rounded-full text-xs">
-                              {filteredProjects[0].category}
-                            </span>
+                        {/* Body */}
+                        <div className="grid md:grid-cols-3 gap-8 items-start">
+                          <div className="md:col-span-2">
+                            <p className="text-xl text-muted-foreground mb-6">{filteredProjects[0].description}</p>
+                            <p className="text-sm text-muted-foreground">{filteredProjects[0].contribution}</p>
                           </div>
-                          <motion.div
-                            className="flex items-center gap-2 text-foreground group-hover:gap-3 transition-all"
-                            whileHover={{ x: 4 }}
-                          >
-                            View Project
-                            <ArrowUpRight size={20} />
-                          </motion.div>
+
+                          <div className="md:col-span-1">
+                            <div className="bg-background/50 p-4 rounded-lg border border-border/20">
+                              <div className="text-sm text-foreground/60 mb-3">Tech</div>
+                              <div className="text-sm font-medium">{filteredProjects[0].tech}</div>
+                              <div className="mt-4 text-xs text-muted-foreground px-2 py-1 bg-secondary inline-block rounded-full">{filteredProjects[0].category}</div>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </a>
