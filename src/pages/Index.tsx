@@ -19,50 +19,59 @@ const AnimatedCounter = ({ value, delay }: { value: number; delay: number }) => 
   const [displayValue, setDisplayValue] = useState(0);
   const hasAnimated = useRef(false);
 
-  useEffect(() => {
-    if (hasAnimated.current) return;
-    hasAnimated.current = true;
-
-    const timer = setTimeout(() => {
-      const duration = 2000;
-      const startTime = Date.now();
-
-      const animate = () => {
-        const elapsed = Date.now() - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        setDisplayValue(Math.floor(value * progress));
-
-        if (progress < 1) {
-          requestAnimationFrame(animate);
-        }
-      };
-
-      animate();
-    }, delay);
-
-    return () => clearTimeout(timer);
-  }, [value, delay]);
-
-  return <>{displayValue}</>;
-};
-
-
-
-// Back to top button component
-const BackToTopButton = ({ show }: { show: boolean }) => {
-  const handleClick = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  return (
-    <AnimatePresence>
-      {show && (
-        <motion.button
-          initial={{ opacity: 0, scale: 0.8, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.8, y: 20 }}
-          onClick={handleClick}
-          className="fixed bottom-8 right-8 z-40 p-3 bg-foreground text-background rounded-full hover:bg-foreground/90 transition-colors"
+  const projects = [
+    {
+      name: 'Path Visualizer',
+      description: 'Interactive pathfinding algorithm visualizer. Visualizes A*, Dijkstra and BFS for learning and debugging.',
+      image: projectPathVisualizer,
+      url: 'https://github.com/xplictly/path-visualizer',
+      tech: 'JavaScript · React',
+      category: 'Web',
+      featured: true,
+    },
+    {
+      name: 'Image Reko (iOS/macOS)',
+      description: 'On-device image recognition for iOS and macOS—Swift app that demos CoreML workflows.',
+      image: projectPathVisualizer, // placeholder until a dedicated asset is added
+      url: 'https://github.com/xplictly/image-reko-ios-macos',
+      tech: 'Swift · CoreML',
+      category: 'Mobile',
+      featured: true,
+    },
+    {
+      name: 'F1 Dashboard',
+      description: 'Real-time Formula 1 statistics and insights with live data integration and charts.',
+      image: projectF1Dashboard,
+      url: 'https://github.com/xplictly/f1_dashboard-main',
+      tech: 'TypeScript · React',
+      category: 'Web',
+      featured: true,
+    },
+    {
+      name: 'F1 Companion',
+      description: 'Companion app for F1 enthusiasts (mobile) with session info and simple tracking features.',
+      image: projectF1Companion,
+      url: 'https://github.com/xplictly/f1companion',
+      tech: 'Kotlin · Mobile',
+      category: 'Mobile',
+    },
+    {
+      name: 'Cursed Snake',
+      description: 'A playful, terminal-based snake variant built for learning game mechanics and Python scripting.',
+      image: projectCursedSnake,
+      url: 'https://github.com/xplictly/cursed-snake',
+      tech: 'Python',
+      category: 'Games',
+    },
+    {
+      name: 'Discord-UwU',
+      description: 'A small Discord bot with moderation and fun commands; republished from earlier work.',
+      image: projectDiscordUwu,
+      url: 'https://github.com/xplictly/Discord-UwU',
+      tech: 'Node.js · Discord.js',
+      category: 'Tools',
+    },
+  ];
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
         >
