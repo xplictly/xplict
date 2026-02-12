@@ -432,7 +432,9 @@ const Index = () => {
                               <div className="text-sm font-medium">{filteredProjects[0].tech}</div>
                               <div className="flex flex-wrap gap-2 mt-3">
                                 {filteredProjects[0].badges?.map((b: string) => (
-                                  <img key={b} src={BADGES[b]} alt={b} className="w-6 h-6" />
+                                  <div key={b} className="w-8 h-8 rounded-full bg-foreground/5 flex items-center justify-center border border-border/20">
+                                    <img src={BADGES[b]} alt={b} className="w-5 h-5" />
+                                  </div>
                                 ))}
                               </div>
                               <div className="mt-4 text-xs text-muted-foreground px-2 py-1 bg-secondary inline-block rounded-full">{filteredProjects[0].category}</div>
@@ -480,7 +482,9 @@ const Index = () => {
                               <p className="text-sm text-foreground/70 mb-2"><strong>Tech:</strong> {project.tech}</p>
                               <div className="flex items-center gap-2 mb-3">
                                 {project.badges?.map((b: string) => (
-                                  <img key={b} src={BADGES[b]} alt={b} className="w-5 h-5" />
+                                  <div key={b} className="w-7 h-7 rounded-full bg-foreground/5 flex items-center justify-center border border-border/10">
+                                    <img src={BADGES[b]} alt={b} className="w-4 h-4" />
+                                  </div>
                                 ))}
                               </div>
                               <p className="text-sm text-muted-foreground">{project.contribution}</p>
@@ -505,7 +509,9 @@ const Index = () => {
                                 <span>{project.tech}</span>
                                 <div className="flex items-center gap-2">
                                   {project.badges?.map((b: string) => (
-                                    <img key={b} src={BADGES[b]} alt={b} className="w-4 h-4" />
+                                    <div key={b} className="w-6 h-6 rounded-full bg-foreground/5 flex items-center justify-center border border-border/10">
+                                      <img src={BADGES[b]} alt={b} className="w-3.5 h-3.5" />
+                                    </div>
                                   ))}
                                 </div>
                                 <span className="px-3 py-1 bg-secondary rounded-full text-xs">
