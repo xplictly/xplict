@@ -83,6 +83,16 @@ const BADGES: Record<string, string> = {
 
 const projects = [
   {
+    name: 'Widget Wall',
+    description: 'A collection of tiny macOS widgets built with WidgetKit—focused, glanceable information for the desktop.',
+    url: 'https://github.com/xplictly/widget-wall',
+    tech: 'Swift · WidgetKit',
+    badges: ['swift'],
+    category: 'Mobile',
+    featured: true,
+    contribution: 'Modular widgets that surface quick, at-a-glance information to reduce context switching.'
+  },
+  {
     name: 'Path Visualizer',
     description: 'Interactive visualizer for pathfinding algorithms (A*, Dijkstra, BFS). Great for teaching and debugging algorithmic ideas.',
     url: 'https://github.com/xplictly/path-visualizer',
@@ -99,18 +109,7 @@ const projects = [
     tech: 'Swift · CoreML',
     badges: ['swift'],
     category: 'Mobile',
-    featured: true,
     contribution: 'Prototype showcasing fast, private ML inference — useful for apps needing local image understanding without server costs.'
-  },
-  {
-    name: 'Widget Wall',
-    description: 'A collection of tiny macOS widgets built with WidgetKit—focused, glanceable information for the desktop.',
-    url: 'https://github.com/xplictly/widget-wall',
-    tech: 'Swift · WidgetKit',
-    badges: ['swift'],
-    category: 'Mobile',
-    featured: true,
-    contribution: 'Modular widgets that surface quick, at-a-glance information to reduce context switching.'
   },
   {
     name: 'F1 Companion',
@@ -456,71 +455,46 @@ const Index = () => {
                     >
                       More Work
                     </motion.h3>
-                    <div className="space-y-24">
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                       {filteredProjects.slice(1).map((project, index) => (
                         <motion.a
                           key={project.name}
                           href={project.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          initial={{ opacity: 0, y: 40 }}
+                          initial={{ opacity: 0, y: 20 }}
                           whileInView={{ opacity: 1, y: 0 }}
-                          viewport={{ once: true, margin: '-100px' }}
-                          transition={{ duration: 0.8, delay: index * 0.1 }}
+                          viewport={{ once: true, margin: '-50px' }}
+                          transition={{ duration: 0.5, delay: (index % 3) * 0.1 }}
                           className="group block"
                         >
-                          <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
-                            {/* Image - alternates position */}
-                            <div
-                              className={`relative h-96 md:h-full rounded-2xl overflow-hidden bg-background/60 border border-border/30 p-8 ${
-                                index % 2 === 1 ? 'md:order-2' : ''
-                              }`}
-                            >
-                              <div className="text-sm font-mono text-foreground/60 mb-3">0{filteredProjects.indexOf(project) + 1}</div>
-                              <h4 className="text-2xl font-bold mb-3">{project.name}</h4>
-                              <p className="text-sm text-muted-foreground mb-4">{project.description}</p>
-                              <p className="text-sm text-foreground/70 mb-2"><strong>Tech:</strong> {project.tech}</p>
-                              <div className="flex items-center gap-2 mb-3">
-                                {project.badges?.map((b: string) => (
-                                  <div key={b} className="w-7 h-7 rounded-full bg-foreground/5 flex items-center justify-center border border-border/10">
-                                    <img src={BADGES[b]} alt={b} className="w-4 h-4" />
-                                  </div>
-                                ))}
-                              </div>
-                              <p className="text-sm text-muted-foreground">{project.contribution}</p>
-                            </div>
-
-                            {/* Content */}
-                            <div
-                              className={`flex flex-col justify-center ${
-                                index % 2 === 1 ? 'md:order-1' : ''
-                              }`}
-                            >
-                              <span className="text-sm font-mono text-foreground/60 mb-3">
+                          <div className="relative h-full rounded-2xl overflow-hidden bg-background/60 border border-border/30 p-6 hover:border-foreground/40 transition-all duration-300">
+                            <div className="flex flex-col h-full">
+                              <span className="text-xs font-mono text-foreground/50 mb-2">
                                 0{filteredProjects.indexOf(project) + 1}
                               </span>
-                              <h3 className="font-serif-display text-4xl md:text-5xl font-bold mb-4 group-hover:text-foreground/80 transition-colors">
+                              <h4 className="text-xl font-bold mb-3 group-hover:text-foreground/80 transition-colors">
                                 {project.name}
-                              </h3>
-                              <p className="text-lg text-muted-foreground mb-8">
+                              </h4>
+                              <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
                                 {project.description}
                               </p>
-                              <div className="flex items-center gap-3 text-sm text-foreground/60">
-                                <span>{project.tech}</span>
-                                <div className="flex items-center gap-2">
+                              <div className="mt-auto">
+                                <p className="text-xs text-muted-foreground mb-3">{project.contribution}</p>
+                                <div className="flex items-center gap-2 mb-3">
                                   {project.badges?.map((b: string) => (
-                                    <div key={b} className="w-6 h-6 rounded-full bg-foreground/5 flex items-center justify-center border border-border/10">
+                                    <div key={b} className="w-6 h-6 rounded-full bg-foreground/5 flex items-center justify-center border border-border/20">
                                       <img src={BADGES[b]} alt={b} className="w-3.5 h-3.5" />
                                     </div>
                                   ))}
                                 </div>
-                                <span className="px-3 py-1 bg-secondary rounded-full text-xs">
-                                  {project.category}
-                                </span>
-                                <ArrowUpRight
-                                  size={18}
-                                  className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"
-                                />
+                                <div className="flex items-center justify-between">
+                                  <span className="text-xs text-muted-foreground">{project.tech}</span>
+                                  <ArrowUpRight
+                                    size={16}
+                                    className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform text-foreground/40 group-hover:text-foreground"
+                                  />
+                                </div>
                               </div>
                             </div>
                           </div>
