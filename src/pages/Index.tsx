@@ -83,6 +83,16 @@ const BADGES: Record<string, string> = {
 
 const projects = [
   {
+    name: 'PlantPal',
+    description: 'A comprehensive plant management application to track watering schedules, maintain a plant journal, and discover new plants.',
+    url: 'https://github.com/xplictly/plantpal',
+    tech: 'Kotlin · Android · Jetpack Compose',
+    badges: ['kotlin'],
+    category: 'Mobile',
+    featured: true,
+    contribution: 'Your all-in-one companion for plant care, tracking, and discovery.'
+  },
+  {
     name: 'Widget Wall',
     description: 'A collection of tiny macOS widgets built with WidgetKit—focused, glanceable information for the desktop.',
     url: 'https://github.com/xplictly/widget-wall',
@@ -222,8 +232,8 @@ const Index = () => {
   const categories = ['All', ...Array.from(new Set(projects.map((p) => p.category)))];
   const featuredProject = projects.find((p) => p.featured);
   const stats = [
-    { label: 'Projects', value: '6' },
-    { label: 'LeetCode', value: '145+' },
+    { label: 'Projects', value: '7' },
+    { label: 'LeetCode', value: '242+' },
     { label: 'Experience', value: '3+yrs' },
   ];
 
@@ -312,13 +322,13 @@ const Index = () => {
                 >
                   <div className="text-center">
                     <div className="text-3xl md:text-4xl font-bold text-foreground mb-2">
-                      {contentVisible && <AnimatedCounter value={6} delay={600} />}
+                      {contentVisible && <AnimatedCounter value={7} delay={600} />}
                     </div>
                     <div className="text-sm text-muted-foreground">Projects</div>
                   </div>
                   <div className="text-center">
                     <div className="text-3xl md:text-4xl font-bold text-foreground mb-2">
-                      {contentVisible && <AnimatedCounter value={145} delay={800} />}
+                      {contentVisible && <AnimatedCounter value={242} delay={800} />}
                       <span>+</span>
                     </div>
                     <div className="text-sm text-muted-foreground">LeetCode</div>
