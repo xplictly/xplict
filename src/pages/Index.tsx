@@ -8,46 +8,10 @@ import { ContactForm } from '@/components/ContactForm';
 import { EasterEggOverlay } from '@/components/EasterEggOverlay';
 import { useKonamiCode } from '@/hooks/useKonamiCode';
 
-// Small badge assets
-import badgeTypescript from '@/assets/badges/typescript.svg';
-import badgeReact from '@/assets/badges/react.svg';
-import badgeSwift from '@/assets/badges/swift.svg';
-import badgePython from '@/assets/badges/python.svg';
-import badgeNode from '@/assets/badges/node.svg';
-import badgeKotlin from '@/assets/badges/kotlin.svg';
-
-// Animated counter component
-const AnimatedCounter = ({ value, delay }: { value: number; delay: number }) => {
-  const [displayValue, setDisplayValue] = useState(0);
-  const hasAnimated = useRef(false);
-
-  useEffect(() => {
-    if (hasAnimated.current) return;
-    hasAnimated.current = true;
-
-    const timer = setTimeout(() => {
-      const duration = 2000;
-      const startTime = Date.now();
-
-      const animate = () => {
-        const elapsed = Date.now() - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        setDisplayValue(Math.floor(value * progress));
-
-        if (progress < 1) {
-          requestAnimationFrame(animate);
-        }
-      };
-
-      animate();
-    }, delay);
-
-    return () => clearTimeout(timer);
-  }, [value, delay]);
-
-  return <>{displayValue}</>;
-};
-
+import { Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { Radar, RadarChart, PolarGrid, PolarAngleAxis, ResponsiveContainer } from 'recharts';
+import { projects, BADGES, experiences, skillsData } from '@/data/portfolio';
 
 // Back to top button component
 const BackToTopButton = ({ show }: { show: boolean }) => {
@@ -71,86 +35,6 @@ const BackToTopButton = ({ show }: { show: boolean }) => {
     </AnimatePresence>
   );
 };
-
-const BADGES: Record<string, string> = {
-  typescript: badgeTypescript,
-  react: badgeReact,
-  swift: badgeSwift,
-  python: badgePython,
-  node: badgeNode,
-  kotlin: badgeKotlin,
-};
-
-const projects = [
-  {
-    name: 'PlantPal',
-    description: 'A comprehensive plant management application to track watering schedules, maintain a plant journal, and discover new plants.',
-    url: 'https://github.com/xplictly/plantpal',
-    tech: 'Kotlin · Android · Jetpack Compose',
-    badges: ['kotlin'],
-    category: 'Mobile',
-    featured: true,
-    contribution: 'Your all-in-one companion for plant care, tracking, and discovery.'
-  },
-  {
-    name: 'Widget Wall',
-    description: 'A collection of tiny macOS widgets built with WidgetKit—focused, glanceable information for the desktop.',
-    url: 'https://github.com/xplictly/widget-wall',
-    tech: 'Swift · WidgetKit',
-    badges: ['swift'],
-    category: 'Mobile',
-    featured: true,
-    contribution: 'Modular widgets that surface quick, at-a-glance information to reduce context switching.'
-  },
-  {
-    name: 'Path Visualizer',
-    description: 'Interactive visualizer for pathfinding algorithms (A*, Dijkstra, BFS). Great for teaching and debugging algorithmic ideas.',
-    url: 'https://github.com/xplictly/path-visualizer',
-    tech: 'TypeScript · React',
-    badges: ['typescript', 'react'],
-    category: 'Web',
-    featured: true,
-    contribution: 'Educational tool that helps learners and engineers prototype and reason about graph search algorithms quickly.'
-  },
-  {
-    name: 'Image Reko (iOS/macOS)',
-    description: 'On-device image recognition demos using CoreML & Vision for privacy-friendly inference on Apple platforms.',
-    url: 'https://github.com/xplictly/image-reko-ios-macos',
-    tech: 'Swift · CoreML',
-    badges: ['swift'],
-    category: 'Mobile',
-    contribution: 'Prototype showcasing fast, private ML inference — useful for apps needing local image understanding without server costs.'
-  },
-  {
-    name: 'F1 Companion',
-    description: 'Mobile companion app for F1 fans providing session summaries and lightweight tracking features.',
-    url: 'https://github.com/xplictly/f1companion',
-    tech: 'Kotlin · Android',
-    badges: ['kotlin'],
-    category: 'Mobile',
-    contribution: 'Aggregates and presents racing data to make session info more accessible for fans.'
-  },
-  {
-    name: 'Cursed Snake',
-    description: 'Terminal-based snake variant implemented for learning game loops, input handling, and procedural content.',
-    url: 'https://github.com/xplictly/cursed-snake',
-    tech: 'Python',
-    badges: ['python'],
-    category: 'Games',
-    contribution: 'A compact sandbox for learning game development fundamentals and quick prototyping.'
-  },
-  {
-    name: 'Discord-UwU',
-    description: 'A small Discord bot featuring moderation helpers and playful commands for community servers.',
-    url: 'https://github.com/xplictly/Discord-UwU',
-    tech: 'Node.js · Discord.js',
-    badges: ['node'],
-    category: 'Tools',
-    contribution: 'Streamlines moderation and adds light-hearted features to keep communities engaged.'
-  },
-];
-
-
 
 const IntroScreen = ({ onComplete }: { onComplete: () => void }) => {
   const [isExiting, setIsExiting] = useState(false);
@@ -204,6 +88,22 @@ const Index = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showBackToTop, setShowBackToTop] = useState(false);
   const { scrollYProgress } = useScroll();
+
+  const { data: githubData } = useQuery({
+    queryKey: ['githubStats'],
+    queryFn: async () => {
+      const res = await fetch('https://api.github.com/users/xplictly');
+      return res.json();
+    }
+  });
+
+  const { data: leetcodeData } = useQuery({
+    queryKey: ['leetcodeStats'],
+    queryFn: async () => {
+      const res = await fetch('https://alfa-leetcode-api.onrender.com/xplictly/solved');
+      return res.json();
+    }
+  });
 
   useKonamiCode(() => setEasterEggActive(true));
 
@@ -313,7 +213,7 @@ const Index = () => {
                   </p>
                 </motion.div>
 
-                {/* Quick Stats with Animated Counters */}
+                {/* Quick Stats */}
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: contentVisible ? 1 : 0, y: contentVisible ? 0 : 20 }}
@@ -322,20 +222,20 @@ const Index = () => {
                 >
                   <div className="text-center">
                     <div className="text-3xl md:text-4xl font-bold text-foreground mb-2">
-                      {contentVisible && <AnimatedCounter value={7} delay={600} />}
+                      {githubData?.public_repos || 7}
                     </div>
                     <div className="text-sm text-muted-foreground">Projects</div>
                   </div>
                   <div className="text-center">
                     <div className="text-3xl md:text-4xl font-bold text-foreground mb-2">
-                      {contentVisible && <AnimatedCounter value={242} delay={800} />}
+                      {leetcodeData?.solvedProblem || 242}
                       <span>+</span>
                     </div>
                     <div className="text-sm text-muted-foreground">LeetCode</div>
                   </div>
                   <div className="text-center">
                     <div className="text-3xl md:text-4xl font-bold text-foreground mb-2">
-                      {contentVisible && <AnimatedCounter value={3} delay={1000} />}
+                      3
                       <span>+</span>
                     </div>
                     <div className="text-sm text-muted-foreground">Years</div>
@@ -415,10 +315,8 @@ const Index = () => {
                     transition={{ duration: 0.8 }}
                     className="mb-24"
                   >
-                    <a
-                      href={filteredProjects[0].url}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <Link
+                      to={"/project/" + filteredProjects[0].id}
                       className="block"
                     >
                       <div className="relative w-full rounded-2xl overflow-hidden bg-background/60 border border-border/30 p-12">
@@ -451,7 +349,7 @@ const Index = () => {
                           </div>
                         </div>
                       </div>
-                    </a>
+                    </Link>
                   </motion.div>
                 )}
 
@@ -467,17 +365,14 @@ const Index = () => {
                     </motion.h3>
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                       {filteredProjects.slice(1).map((project, index) => (
-                        <motion.a
+                        <motion.div
                           key={project.name}
-                          href={project.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
                           initial={{ opacity: 0, y: 20 }}
                           whileInView={{ opacity: 1, y: 0 }}
                           viewport={{ once: true, margin: '-50px' }}
                           transition={{ duration: 0.5, delay: (index % 3) * 0.1 }}
-                          className="group block"
                         >
+                          <Link to={"/project/" + project.id} className="group block h-full">
                           <div className="relative h-full rounded-2xl overflow-hidden bg-background/60 border border-border/30 p-6 hover:border-foreground/40 transition-all duration-300">
                             <div className="flex flex-col h-full">
                               <span className="text-xs font-mono text-foreground/50 mb-2">
@@ -508,7 +403,8 @@ const Index = () => {
                               </div>
                             </div>
                           </div>
-                        </motion.a>
+                          </Link>
+                        </motion.div>
                       ))}
                     </div>
                   </>
@@ -526,6 +422,40 @@ const Index = () => {
                     </p>
                   </motion.div>
                 )}
+              </div>
+            </section>
+
+            {/* Experience Section */}
+            <section className="relative py-32 px-6 md:px-12 bg-background border-t border-border/50">
+              <div className="max-w-3xl mx-auto">
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-100px' }}
+                  transition={{ duration: 0.8 }}
+                >
+                  <h2 className="font-serif-display text-6xl md:text-7xl font-bold mb-16">Experience</h2>
+                  
+                  <div className="space-y-16">
+                    {experiences.map((exp, index) => (
+                      <div key={exp.id} className="relative pl-8 md:pl-0">
+                        <div className="hidden md:block absolute left-0 top-0 w-32 text-sm text-foreground/50 pt-1">
+                          {exp.period}
+                        </div>
+                        <div className="md:ml-40 relative">
+                          <div className="absolute -left-10 md:-left-8 top-2 w-3 h-3 bg-foreground rounded-full" />
+                          {index !== experiences.length - 1 && (
+                            <div className="absolute -left-[35px] md:-left-[27px] top-6 bottom-[-64px] w-[1px] bg-border/50" />
+                          )}
+                          <h3 className="text-2xl font-bold mb-2">{exp.role}</h3>
+                          <div className="text-foreground/70 mb-4 font-mono text-sm uppercase tracking-wider">{exp.company}</div>
+                          <div className="md:hidden text-sm text-foreground/50 mb-4">{exp.period}</div>
+                          <p className="text-muted-foreground leading-relaxed">{exp.description}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
               </div>
             </section>
 
@@ -568,14 +498,15 @@ const Index = () => {
                   {/* Tech Stack Preview */}
                   <div className="mt-16 pt-16 border-t border-border/50">
                     <h3 className="font-serif-display text-2xl font-bold mb-8">What I Use</h3>
-                    <div className="grid md:grid-cols-2 gap-12">
-                      <div>
-                        <h4 className="text-sm font-mono text-foreground/60 mb-4 uppercase">Languages & Frameworks</h4>
-                        <div className="space-y-2 text-muted-foreground">
-                          <p>C++ • JavaScript • TypeScript • Python</p>
-                          <p>React • Node.js • Express • Vite</p>
-                          <p>MySQL • MongoDB • Docker</p>
-                        </div>
+                    <div className="grid md:grid-cols-2 gap-12 items-center">
+                      <div className="h-[300px] w-full">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <RadarChart cx="50%" cy="50%" outerRadius="70%" data={skillsData}>
+                            <PolarGrid stroke="hsl(var(--border))" />
+                            <PolarAngleAxis dataKey="name" tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }} />
+                            <Radar name="Skills" dataKey="proficiency" stroke="hsl(var(--foreground))" fill="hsl(var(--foreground))" fillOpacity={0.2} />
+                          </RadarChart>
+                        </ResponsiveContainer>
                       </div>
                       <div>
                         <h4 className="text-sm font-mono text-foreground/60 mb-4 uppercase">Tools & Setup</h4>
@@ -702,6 +633,10 @@ const Index = () => {
                     >
                       GS4L
                     </motion.button>
+                    <span className="text-foreground/40">•</span>
+                    <Link to="/now" className="hover:text-foreground transition-colors cursor-pointer select-none">
+                      Now
+                    </Link>
                     <span className="text-foreground/40">•</span>
                     <span className="font-serif-display italic">xplicit</span>
                   </div>
