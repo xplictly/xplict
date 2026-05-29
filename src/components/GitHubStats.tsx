@@ -24,13 +24,27 @@ export const GitHubStats = () => {
       try {
         // Fetch user stats
         const userResponse = await fetch('https://api.github.com/users/xplictly');
+        if (!userResponse.ok) {
+          throw new Error(`User API failed: ${userResponse.status}`);
+        }
         const userData = await userResponse.json();
 
         // Fetch repos for star count
         const reposResponse = await fetch('https://api.github.com/users/xplictly/repos?per_page=100');
+        if (!reposResponse.ok) {
+          throw new Error(`Repos API failed: ${reposResponse.status}`);
+        }
         const reposData = await reposResponse.json();
 
-        const totalStars = reposData.reduce((sum: number, repo: any) => sum + repo.stargazers_count, 0);
+        if (!Array.isArray(reposData)) {
+          throw new Error('Repositories data is not an array.');
+        }
+
+        interface GitHubRepository {
+          stargazers_count: number;
+        }
+
+        const totalStars = reposData.reduce((sum: number, repo: GitHubRepository) => sum + (repo.stargazers_count || 0), 0);
 
         setStats({
           followers: userData.followers || 0,
@@ -40,6 +54,7 @@ export const GitHubStats = () => {
           error: false,
         });
       } catch (error) {
+        console.error('Failed to fetch GitHub stats:', error);
         setStats((prev) => ({ ...prev, loading: false, error: true }));
       }
     };

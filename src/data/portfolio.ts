@@ -133,7 +133,7 @@ export const skillsData = [
 export const nowData = {
   status: "Building and Learning",
   learning: "Currently deep-diving into Rust and WebAssembly to understand systems programming on the web.",
-  building: "Working on a new stealth project focused on developer productivity and terminal workflows.",
-  listening: "A lot of alternative rock and early 2000s hip-hop.",
-  reading: "Designing Data-Intensive Applications by Martin Kleppmann."
+  building: "Currently not working on anything because of College's routine (classic)",
+  listening: "A heavy rotation of classic Thrash and modern Progressive Metal (Gojira, Tool, Metallica).",
+  reading: "Tuesdays with Morrie by Mitch Albom"
 };

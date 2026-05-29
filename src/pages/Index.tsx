@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useMotionValueEvent, useMotionTemplate, useMotionValue } from 'framer-motion';
 import { ArrowUpRight, ArrowRight, Github, Instagram, Mail, ExternalLink, ChevronUp, Copy, Check } from 'lucide-react';
 import maanasAvatar from '@/assets/maanas-avatar.jpg';
 import { SpotlightCursor } from '@/components/SpotlightCursor';
@@ -12,6 +12,74 @@ import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, ResponsiveContainer } from 'recharts';
 import { projects, BADGES, experiences, skillsData } from '@/data/portfolio';
+
+// Magnetic Physics Wrapper
+const Magnetic = ({ children }: { children: React.ReactNode }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  const handleMouse = (e: React.MouseEvent) => {
+    const { clientX, clientY } = e;
+    const { height, width, left, top } = ref.current!.getBoundingClientRect();
+    const middleX = clientX - (left + width / 2);
+    const middleY = clientY - (top + height / 2);
+    setPosition({ x: middleX * 0.2, y: middleY * 0.2 });
+  };
+
+  const reset = () => {
+    setPosition({ x: 0, y: 0 });
+  };
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMouse}
+      onMouseLeave={reset}
+      animate={{ x: position.x, y: position.y }}
+      transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
+      className="inline-block"
+    >
+      {children}
+    </motion.div>
+  );
+};
+
+// Spotlight Card Component
+const SpotlightCard = ({ children, to, className = "" }: { children: React.ReactNode, to: string, className?: string }) => {
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  function handleMouseMove({ currentTarget, clientX, clientY }: React.MouseEvent) {
+    const { left, top } = currentTarget.getBoundingClientRect();
+    mouseX.set(clientX - left);
+    mouseY.set(clientY - top);
+  }
+
+  return (
+    <Link to={to} className="group block h-full">
+      <motion.div
+        className={`relative h-full rounded-2xl overflow-hidden bg-background/60 border border-border/30 hover:border-foreground/40 transition-all duration-300 ${className}`}
+        onMouseMove={handleMouseMove}
+      >
+        <motion.div
+          className="pointer-events-none absolute -inset-px opacity-0 transition duration-300 md:group-hover:opacity-100"
+          style={{
+            background: useMotionTemplate`
+              radial-gradient(
+                600px circle at ${mouseX}px ${mouseY}px,
+                rgba(255,255,255,0.06),
+                transparent 40%
+              )
+            `,
+          }}
+        />
+        <div className="relative z-10 h-full flex flex-col">
+          {children}
+        </div>
+      </motion.div>
+    </Link>
+  );
+};
 
 // Back to top button component
 const BackToTopButton = ({ show }: { show: boolean }) => {
@@ -89,20 +157,44 @@ const Index = () => {
   const [showBackToTop, setShowBackToTop] = useState(false);
   const { scrollYProgress } = useScroll();
 
-  const { data: githubData } = useQuery({
+  interface GitHubStatsResponse {
+    public_repos?: number;
+    [key: string]: any;
+  }
+
+  interface LeetCodeStatsResponse {
+    solvedProblem?: number;
+    [key: string]: any;
+  }
+
+  const { data: githubData } = useQuery<GitHubStatsResponse>({
     queryKey: ['githubStats'],
     queryFn: async () => {
-      const res = await fetch('https://api.github.com/users/xplictly');
+      const url = import.meta.env.DEV ? 'https://api.github.com/users/xplictly' : '/api/github';
+      const res = await fetch(url);
+      if (!res.ok) {
+        throw new Error(`GitHub API returned status: ${res.status}`);
+      }
       return res.json();
-    }
+    },
+    staleTime: 1000 * 60 * 10,
+    gcTime: 1000 * 60 * 60,
+    retry: 1,
   });
 
-  const { data: leetcodeData } = useQuery({
+  const { data: leetcodeData } = useQuery<LeetCodeStatsResponse>({
     queryKey: ['leetcodeStats'],
     queryFn: async () => {
-      const res = await fetch('https://alfa-leetcode-api.onrender.com/xplictly/solved');
+      const url = import.meta.env.DEV ? 'https://alfa-leetcode-api.onrender.com/xplictly/solved' : '/api/leetcode';
+      const res = await fetch(url);
+      if (!res.ok) {
+        throw new Error(`LeetCode API returned status: ${res.status}`);
+      }
       return res.json();
-    }
+    },
+    staleTime: 1000 * 60 * 10,
+    gcTime: 1000 * 60 * 60,
+    retry: 1,
   });
 
   useKonamiCode(() => setEasterEggActive(true));
@@ -138,7 +230,10 @@ const Index = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background text-foreground cursor-none">
+    <motion.div 
+      initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -15 }} transition={{ duration: 0.4, ease: "circOut" }}
+      className="min-h-screen bg-background text-foreground cursor-none"
+    >
       <AnimatePresence>
         {showIntro && <IntroScreen onComplete={() => setShowIntro(false)} />}
       </AnimatePresence>
@@ -315,11 +410,10 @@ const Index = () => {
                     transition={{ duration: 0.8 }}
                     className="mb-24"
                   >
-                    <Link
+                    <SpotlightCard
                       to={"/project/" + filteredProjects[0].id}
-                      className="block"
+                      className="p-6 md:p-12"
                     >
-                      <div className="relative w-full rounded-2xl overflow-hidden bg-background/60 border border-border/30 p-12">
                         {/* Title (use the same serif display font as the left-side style) */}
                         <div className="mb-6">
                           <span className="text-sm font-mono text-foreground/60">Featured</span>
@@ -348,8 +442,7 @@ const Index = () => {
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </Link>
+                    </SpotlightCard>
                   </motion.div>
                 )}
 
@@ -372,8 +465,7 @@ const Index = () => {
                           viewport={{ once: true, margin: '-50px' }}
                           transition={{ duration: 0.5, delay: (index % 3) * 0.1 }}
                         >
-                          <Link to={"/project/" + project.id} className="group block h-full">
-                          <div className="relative h-full rounded-2xl overflow-hidden bg-background/60 border border-border/30 p-6 hover:border-foreground/40 transition-all duration-300">
+                          <SpotlightCard to={"/project/" + project.id} className="p-6">
                             <div className="flex flex-col h-full">
                               <span className="text-xs font-mono text-foreground/50 mb-2">
                                 0{filteredProjects.indexOf(project) + 1}
@@ -402,8 +494,7 @@ const Index = () => {
                                 </div>
                               </div>
                             </div>
-                          </div>
-                          </Link>
+                          </SpotlightCard>
                         </motion.div>
                       ))}
                     </div>
@@ -541,17 +632,17 @@ const Index = () => {
                       </p>
                       <div className="space-y-6">
                         <motion.button
-                          onClick={() => copyToClipboard('maanasnk@yahoo.com')}
+                          onClick={() => copyToClipboard(atob('bWFhbmFzbmtAeWFob28uY29t'))}
                           whileHover={{ x: 4 }}
                           className="block text-lg text-foreground hover:text-foreground/70 transition-colors group w-full text-left"
                         >
                           <span className="flex items-center gap-2">
-                            maanasnk@yahoo.com
+                            {atob('bWFhbmFzbmtAeWFob28uY29t')}
                             <motion.div
-                              animate={{ opacity: copiedEmail === 'maanasnk@yahoo.com' ? 1 : 0, scale: copiedEmail === 'maanasnk@yahoo.com' ? 1 : 0.8 }}
+                              animate={{ opacity: copiedEmail === atob('bWFhbmFzbmtAeWFob28uY29t') ? 1 : 0, scale: copiedEmail === atob('bWFhbmFzbmtAeWFob28uY29t') ? 1 : 0.8 }}
                               transition={{ duration: 0.2 }}
                             >
-                              {copiedEmail === 'maanasnk@yahoo.com' ? (
+                              {copiedEmail === atob('bWFhbmFzbmtAeWFob28uY29t') ? (
                                 <Check size={18} className="text-green-500" />
                               ) : (
                                 <Copy size={18} className="text-foreground/40 group-hover:text-foreground/60 transition-colors" />
@@ -560,17 +651,17 @@ const Index = () => {
                           </span>
                         </motion.button>
                         <motion.button
-                          onClick={() => copyToClipboard('maanasnk@gmail.com')}
+                          onClick={() => copyToClipboard(atob('bWFhbmFzbmtAZ21haWwuY29t'))}
                           whileHover={{ x: 4 }}
                           className="block text-lg text-foreground hover:text-foreground/70 transition-colors group w-full text-left"
                         >
                           <span className="flex items-center gap-2">
-                            maanasnk@gmail.com
+                            {atob('bWFhbmFzbmtAZ21haWwuY29t')}
                             <motion.div
-                              animate={{ opacity: copiedEmail === 'maanasnk@gmail.com' ? 1 : 0, scale: copiedEmail === 'maanasnk@gmail.com' ? 1 : 0.8 }}
+                              animate={{ opacity: copiedEmail === atob('bWFhbmFzbmtAZ21haWwuY29t') ? 1 : 0, scale: copiedEmail === atob('bWFhbmFzbmtAZ21haWwuY29t') ? 1 : 0.8 }}
                               transition={{ duration: 0.2 }}
                             >
-                              {copiedEmail === 'maanasnk@gmail.com' ? (
+                              {copiedEmail === atob('bWFhbmFzbmtAZ21haWwuY29t') ? (
                                 <Check size={18} className="text-green-500" />
                               ) : (
                                 <Copy size={18} className="text-foreground/40 group-hover:text-foreground/60 transition-colors" />
@@ -580,33 +671,38 @@ const Index = () => {
                         </motion.button>
                       </div>
 
-                      {/* Social Links */}
                       <div className="mt-12 pt-12 border-t border-border/30 flex items-center gap-6">
-                        <motion.a
-                          href="https://github.com/xplictly"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          whileHover={{ scale: 1.1, y: -4 }}
-                          className="text-foreground/60 hover:text-foreground transition-colors"
-                        >
-                          <Github size={24} />
-                        </motion.a>
-                        <motion.a
-                          href="https://instagram.com/maanasxd"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          whileHover={{ scale: 1.1, y: -4 }}
-                          className="text-foreground/60 hover:text-foreground transition-colors"
-                        >
-                          <Instagram size={24} />
-                        </motion.a>
-                        <motion.button
-                          onClick={() => copyToClipboard('maanasnk@yahoo.com')}
-                          whileHover={{ scale: 1.1, y: -4 }}
-                          className="text-foreground/60 hover:text-foreground transition-colors"
-                        >
-                          <Mail size={24} />
-                        </motion.button>
+                        <Magnetic>
+                          <motion.a
+                            href="https://github.com/xplictly"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            whileHover={{ scale: 1.1 }}
+                            className="text-foreground/60 hover:text-foreground transition-colors block"
+                          >
+                            <Github size={24} />
+                          </motion.a>
+                        </Magnetic>
+                        <Magnetic>
+                          <motion.a
+                            href="https://instagram.com/maanasxd"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            whileHover={{ scale: 1.1 }}
+                            className="text-foreground/60 hover:text-foreground transition-colors block"
+                          >
+                            <Instagram size={24} />
+                          </motion.a>
+                        </Magnetic>
+                        <Magnetic>
+                          <motion.button
+                            onClick={() => copyToClipboard(atob('bWFhbmFzbmtAeWFob28uY29t'))}
+                            whileHover={{ scale: 1.1 }}
+                            className="text-foreground/60 hover:text-foreground transition-colors block"
+                          >
+                            <Mail size={24} />
+                          </motion.button>
+                        </Magnetic>
                       </div>
                     </div>
 
@@ -646,7 +742,7 @@ const Index = () => {
           </div>
         </>
       )}
-    </div>
+    </motion.div>
   );
 };
 

@@ -11,17 +11,23 @@ const ProjectPage = () => {
 
   if (!project) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background text-foreground">
+      <motion.div 
+        initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -15 }} transition={{ duration: 0.4, ease: "circOut" }}
+        className="min-h-screen flex items-center justify-center bg-background text-foreground"
+      >
         <div className="text-center">
           <h1 className="text-4xl font-bold mb-4">Project Not Found</h1>
           <Link to="/" className="text-muted-foreground hover:text-foreground underline">Return Home</Link>
         </div>
-      </div>
+      </motion.div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground cursor-none selection:bg-foreground/20 selection:text-foreground">
+    <motion.div 
+      initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -15 }} transition={{ duration: 0.4, ease: "circOut" }}
+      className="min-h-screen bg-background text-foreground cursor-none selection:bg-foreground/20 selection:text-foreground"
+    >
       <SpotlightCursor />
       <CustomCursor />
       
@@ -78,7 +84,7 @@ const ProjectPage = () => {
           </div>
         </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

@@ -61,8 +61,8 @@ export const EasterEggOverlay = ({ isActive, onClose }: EasterEggOverlayProps) =
           >
             <div className="relative aspect-video rounded-lg overflow-hidden border border-border/50 shadow-2xl">
               <iframe
-                src="https://www.youtube.com/embed/7K-uLkzzwBQ?si=cnP1tv02EinAqSKT&autoplay=1"
-                title="GTA San Andreas"
+                src="https://www.youtube.com/embed/A6g0mPo-uJM?autoplay=1"
+                title="GS4L"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
                 className="absolute inset-0 w-full h-full"
