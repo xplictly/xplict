@@ -438,7 +438,12 @@ const Index = () => {
                                   </div>
                                 ))}
                               </div>
-                              <div className="mt-4 text-xs text-muted-foreground px-2 py-1 bg-secondary inline-block rounded-full">{filteredProjects[0].category}</div>
+                              <div className="mt-4 flex flex-wrap gap-2">
+                                <div className="text-xs text-muted-foreground px-2 py-1 bg-secondary inline-block rounded-full">{filteredProjects[0].category}</div>
+                                {(filteredProjects[0] as any).period && (
+                                  <div className="text-xs text-muted-foreground px-2 py-1 bg-secondary inline-block rounded-full">{(filteredProjects[0] as any).period}</div>
+                                )}
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -467,9 +472,16 @@ const Index = () => {
                         >
                           <SpotlightCard to={"/project/" + project.id} className="p-6">
                             <div className="flex flex-col h-full">
-                              <span className="text-xs font-mono text-foreground/50 mb-2">
-                                0{filteredProjects.indexOf(project) + 1}
-                              </span>
+                              <div className="flex justify-between items-center mb-2">
+                                <span className="text-xs font-mono text-foreground/50">
+                                  0{filteredProjects.indexOf(project) + 1}
+                                </span>
+                                {(project as any).period && (
+                                  <span className="text-xs font-mono text-foreground/50">
+                                    {(project as any).period}
+                                  </span>
+                                )}
+                              </div>
                               <h4 className="font-serif-display text-2xl font-bold mb-3 group-hover:text-foreground/80 transition-colors">
                                 {project.name}
                               </h4>

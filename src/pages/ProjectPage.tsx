@@ -43,8 +43,16 @@ const ProjectPage = () => {
           </Link>
 
           <div className="mb-8">
-            <span className="text-sm font-mono text-foreground/60 uppercase tracking-wider">{project.category}</span>
-            <h1 className="font-serif-display text-5xl md:text-7xl font-bold mt-4 mb-6">{project.name}</h1>
+            <div className="flex items-center gap-4 text-sm font-mono text-foreground/60 uppercase tracking-wider mb-2">
+              <span>{project.category}</span>
+              {(project as any).period && (
+                <>
+                  <span>•</span>
+                  <span>{(project as any).period}</span>
+                </>
+              )}
+            </div>
+            <h1 className="font-serif-display text-5xl md:text-7xl font-bold mt-2 mb-6">{project.name}</h1>
             <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed">
               {project.description}
             </p>

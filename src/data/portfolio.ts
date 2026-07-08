@@ -16,6 +16,44 @@ export const BADGES: Record<string, string> = {
 
 export const projects = [
   {
+    id: 'motogp-widget',
+    name: 'MotoGP macOS Widget App',
+    description: 'Native macOS widget application to deliver real-time motorsport data directly to the desktop environment.',
+    url: 'https://github.com/xplictly',
+    tech: 'Swift · SwiftUI · WidgetKit',
+    badges: ['swift'],
+    category: 'Mobile',
+    featured: true,
+    contribution: 'Delivers real-time motorsport data directly to the desktop environment.',
+    approach: 'Architected three distinct widget modules (Race Calendar, Driver Standings, and Constructor Standings), ensuring flawless responsiveness across .systemSmall, .systemMedium, and .systemLarge form factors. Developed a high-fidelity, premium dark-mode UI with complex nested layouts and seamless edge-to-edge container backgrounds. Utilized TimelineProvider for asynchronous widget data updates.',
+    period: 'May 2026 - July 2026'
+  },
+  {
+    id: 'react-ui-dashboards',
+    name: 'React UI Dashboards (Widget Wall & F1 Companion)',
+    description: 'Converted complex Figma wireframes into pixel-accurate, high-performance UI components, emphasizing clean, minimalist interfaces and smooth interactions.',
+    url: 'https://github.com/xplictly',
+    tech: 'React · Next.js · Figma · REST APIs',
+    badges: ['react'],
+    category: 'Web',
+    featured: true,
+    contribution: 'Pixel-accurate, high-performance UI components and dashboards.',
+    approach: 'Developed and integrated REST APIs to asynchronously fetch, parse, and render real-time telemetry, user dashboards, and statistics into responsive frontend views without blocking the main thread.',
+    period: 'November 2025 - March 2026'
+  },
+  {
+    id: 'automated-outreach-engine',
+    name: 'Automated Outreach Engine',
+    description: 'End-to-end data pipeline integrating distinct external REST APIs into a single, automated execution loop.',
+    url: 'https://github.com/xplictly',
+    tech: 'Python · REST APIs · System Design',
+    badges: ['python'],
+    category: 'Backend',
+    contribution: 'Automated execution loop requiring no human intervention.',
+    approach: 'Engineered an end-to-end data pipeline integrating four distinct external REST APIs. Implemented robust defensive programming patterns, handling authentication, pagination, and error-handling for external endpoints to prevent execution crashes.',
+    period: 'June 2026 - June 2026'
+  },
+  {
     id: 'plantpal',
     name: 'PlantPal',
     description: 'A comprehensive plant management application to track watering schedules, maintain a plant journal, and discover new plants.',
@@ -23,21 +61,10 @@ export const projects = [
     tech: 'Kotlin · Android · Jetpack Compose',
     badges: ['kotlin'],
     category: 'Mobile',
-    featured: true,
+    featured: false,
     contribution: 'Your all-in-one companion for plant care, tracking, and discovery.',
-    approach: 'I architected PlantPal using modern Android development practices, leveraging Jetpack Compose for a reactive UI and Kotlin Coroutines for asynchronous data handling. To manage plant data effectively, I utilized Room Database for local persistence, ensuring offline capabilities. The core challenge was designing a robust scheduling system for watering reminders, which I solved by integrating WorkManager to handle background tasks reliably even when the app is closed.'
-  },
-  {
-    id: 'widget-wall',
-    name: 'Widget Wall',
-    description: 'A collection of tiny macOS widgets built with WidgetKit—focused, glanceable information for the desktop.',
-    url: 'https://github.com/xplictly/widget-wall',
-    tech: 'Swift · WidgetKit',
-    badges: ['swift'],
-    category: 'Mobile',
-    featured: true,
-    contribution: 'Modular widgets that surface quick, at-a-glance information to reduce context switching.',
-    approach: 'Widget Wall was born from a desire to make macOS more informative at a glance. I built the foundation using Swift and WidgetKit, focusing on optimizing memory usage and update frequency to ensure system performance wasn\'t impacted. I implemented an App Group shared container to allow seamless data syncing between the main app (for configuration) and the widget extensions. Designing the modular timeline provider was key to delivering accurate, up-to-date content without draining battery life.'
+    approach: 'I architected PlantPal using modern Android development practices, leveraging Jetpack Compose for a reactive UI and Kotlin Coroutines for asynchronous data handling. To manage plant data effectively, I utilized Room Database for local persistence, ensuring offline capabilities. The core challenge was designing a robust scheduling system for watering reminders, which I solved by integrating WorkManager to handle background tasks reliably even when the app is closed.',
+    period: '2023 - 2024'
   },
   {
     id: 'path-visualizer',
@@ -47,9 +74,10 @@ export const projects = [
     tech: 'TypeScript · React',
     badges: ['typescript', 'react'],
     category: 'Web',
-    featured: true,
+    featured: false,
     contribution: 'Educational tool that helps learners and engineers prototype and reason about graph search algorithms quickly.',
-    approach: 'I wanted to create an intuitive way to understand complex graph algorithms. I chose React and TypeScript to build a highly interactive grid system. State management was crucial here, as maintaining grid state during algorithm execution required careful optimization to prevent unnecessary re-renders. I implemented a custom hook to manage the animation loop, using `requestAnimationFrame` to ensure smooth rendering of the search process while allowing users to adjust execution speed dynamically.'
+    approach: 'I wanted to create an intuitive way to understand complex graph algorithms. I chose React and TypeScript to build a highly interactive grid system. State management was crucial here, as maintaining grid state during algorithm execution required careful optimization to prevent unnecessary re-renders. I implemented a custom hook to manage the animation loop, using `requestAnimationFrame` to ensure smooth rendering of the search process while allowing users to adjust execution speed dynamically.',
+    period: '2023'
   },
   {
     id: 'image-reko',
@@ -60,18 +88,8 @@ export const projects = [
     badges: ['swift'],
     category: 'Mobile',
     contribution: 'Prototype showcasing fast, private ML inference — useful for apps needing local image understanding without server costs.',
-    approach: 'Privacy-first ML is a growing necessity. For Image Reko, I focused entirely on on-device processing using Apple\'s Vision framework and CoreML. The main challenge was handling live camera feeds efficiently. I implemented a custom `AVCaptureVideoDataOutputSampleBufferDelegate` to process frames concurrently, resizing and cropping them before passing them to the CoreML model to maintain 60FPS while minimizing thermal throttling.'
-  },
-  {
-    id: 'f1-companion',
-    name: 'F1 Companion',
-    description: 'Mobile companion app for F1 fans providing session summaries and lightweight tracking features.',
-    url: 'https://github.com/xplictly/f1companion',
-    tech: 'Kotlin · Android',
-    badges: ['kotlin'],
-    category: 'Mobile',
-    contribution: 'Aggregates and presents racing data to make session info more accessible for fans.',
-    approach: 'As a huge Formula 1 fan, I built F1 Companion to have racing data easily accessible. I integrated with the Ergast Developer API to fetch historical and live timing data. To handle network latency and API rate limits, I implemented a robust caching layer using Retrofit and Room. The UI was built following Material Design 3 guidelines to provide a modern, cohesive experience.'
+    approach: 'Privacy-first ML is a growing necessity. For Image Reko, I focused entirely on on-device processing using Apple\'s Vision framework and CoreML. The main challenge was handling live camera feeds efficiently. I implemented a custom `AVCaptureVideoDataOutputSampleBufferDelegate` to process frames concurrently, resizing and cropping them before passing them to the CoreML model to maintain 60FPS while minimizing thermal throttling.',
+    period: '2023'
   },
   {
     id: 'cursed-snake',
@@ -82,7 +100,8 @@ export const projects = [
     badges: ['python'],
     category: 'Games',
     contribution: 'A compact sandbox for learning game development fundamentals and quick prototyping.',
-    approach: 'Cursed Snake was an exercise in understanding low-level game loops. Using Python\'s `curses` library, I built a non-blocking input listener and a fixed time-step update loop. The specific approach to the game logic involved representing the snake as a deque for $O(1)$ head/tail operations, and implementing basic procedural generation for obstacles to increase difficulty dynamically.'
+    approach: 'Cursed Snake was an exercise in understanding low-level game loops. Using Python\'s `curses` library, I built a non-blocking input listener and a fixed time-step update loop. The specific approach to the game logic involved representing the snake as a deque for $O(1)$ head/tail operations, and implementing basic procedural generation for obstacles to increase difficulty dynamically.',
+    period: '2022'
   },
   {
     id: 'discord-uwu',
@@ -93,11 +112,19 @@ export const projects = [
     badges: ['node'],
     category: 'Tools',
     contribution: 'Streamlines moderation and adds light-hearted features to keep communities engaged.',
-    approach: 'Built entirely with Node.js and Discord.js, I structured the bot using a modular command handler pattern, making it extremely easy to add new features. I integrated a SQLite database for persistent server configurations and user data. The key focus was on event-driven architecture, ensuring the bot responded quickly to messages and reactions without blocking the Node event loop.'
+    approach: 'Built entirely with Node.js and Discord.js, I structured the bot using a modular command handler pattern, making it extremely easy to add new features. I integrated a SQLite database for persistent server configurations and user data. The key focus was on event-driven architecture, ensuring the bot responded quickly to messages and reactions without blocking the Node event loop.',
+    period: '2022'
   },
 ];
 
 export const experiences = [
+  {
+    id: 0,
+    role: "Core Contributor",
+    company: "Odysseus (Self-Hosted AI Workspace)",
+    period: "June 2026 - Present",
+    description: "Architected and successfully merged a massive system refactor (PR #3435), accelerating coding and debugging of legacy Python logic by leveraging AI-assisted tools under strict maintainer guidance. Collaborated to untangle complex logic layers, resolving CI/CD pipeline testing failures and ensuring zero-regression migrations within a scalable handler registry.",
+  },
   {
     id: 1,
     role: "Software Developer",
@@ -134,6 +161,6 @@ export const nowData = {
   status: "Building and Learning",
   learning: "Currently deep-diving into Rust and WebAssembly to understand systems programming on the web.",
   building: "Currently not working on anything because of College's routine (classic)",
-  listening: "A heavy rotation of classic Thrash and modern Progressive Metal (Gojira, Tool, Metallica).",
+  listening: "I am currently listening to French music and rediscovering electronic, whilst also continuing with metal.",
   reading: "Tuesdays with Morrie by Mitch Albom"
 };
